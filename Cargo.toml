@@ -1,0 +1,28 @@
+[package]
+name = "armory"
+description = "A.R.M.O.R.Y. (Arcade Runner Menu On Rails, Yeah!): a light gun friendly launcher for arcade games and tools"
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/tbreckle/armory"
+publish = false
+
+[dependencies]
+
+[profile.dev]
+opt-level = 0              # No optimization.
+debug = "line-tables-only"
+strip = false              # Keep symbols.
+debug-assertions = true
+overflow-checks = true
+incremental = true         # Faster recompilation.
+
+[profile.dev.package."*"]
+debug = false
+
+[profile.release]
+opt-level = 'z'   # Optimize for size.
+lto = true        # Enable Link Time Optimization.
+codegen-units = 1 # Better optimization.
+strip = true      # Strip symbols.
+panic = 'abort'   # Smaller panic handler.

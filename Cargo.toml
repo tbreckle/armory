@@ -31,6 +31,11 @@ thiserror = "2.0"
 [build-dependencies]
 slint-build = "1.18"
 
+# Embeds the icon and version info into the .exe (build.rs). Only on Windows hosts, as it needs
+# the Windows SDK resource compiler.
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1"
+
 [profile.dev]
 opt-level = 0              # No optimization.
 debug = "line-tables-only"

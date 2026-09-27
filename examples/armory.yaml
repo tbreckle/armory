@@ -9,7 +9,7 @@ style:
   button_height: 200
 
 status_texts:
-  fault: "Error"            # "on" and "off" keep their defaults
+  fault: "Error" # "on" and "off" keep their defaults
 
 tabs:
   - name: "Games"
@@ -21,7 +21,7 @@ tabs:
           image: images/crosshair.svg
           run: C:/Emulators/Supermodel/Supermodel.exe
           args: ["roms/lostwsga.zip", "-fullscreen"]
-          on_launch: minimize          # restore ARMORY when the game exits
+          on_launch: minimize # restore ARMORY when the game exits
       - button:
           label: "Let's Go Jungle"
           run: C:/Emulators/Supermodel/Supermodel.exe
@@ -52,9 +52,9 @@ tabs:
           run: C:/Sinden/SindenLightgun.exe
       - button:
           label: "Recoil script"
-          run: scripts/recoil.ahk        # opened with AutoHotkey through the file association
+          run: scripts/recoil.ahk # opened with AutoHotkey through the file association
           on_launch: minimize
-          wait_for: AutoHotkey64.exe     # needed: the association hides the real process
+          wait_for: AutoHotkey64.exe # needed: the association hides the real process
       - label:
           text: "AutoHotkey {STATUS}"
           monitor: AutoHotkey64.exe
@@ -65,6 +65,8 @@ tabs:
   - name: "System"
     image: images/power.svg
     items:
-      - button: { label: "Reload config", action: reload }
-      - button: { label: "Minimize", action: minimize }
-      - button: { label: "Quit", image: images/power.svg, action: quit }
+      - button:
+          { label: "Reload config", image: images/reload.svg, action: reload }
+      - button:
+          { label: "Minimize", image: images/minimize.svg, action: minimize }
+      - button: { label: "Quit", image: images/quit.svg, action: quit }

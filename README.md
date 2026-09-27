@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🎯 A.R.M.O.R.Y.
+<img src="images/icon.png" alt="A.R.M.O.R.Y. icon" width="128">
+
+# A.R.M.O.R.Y.
 
 ### Arcade Runner Menu On Rails, Yeah!
 
@@ -94,6 +96,7 @@ armory/
 ├── src/                   # Application source (single crate)
 ├── ui/app.slint           # User interface (Slint)
 ├── build.rs               # Compiles the UI, injects the build version (ARMORY_VERSION)
+├── images/                # App icon (icon.svg is the source of icon.png/icon.ico)
 ├── examples/              # Example configuration with images
 ├── docs/                  # Configuration reference
 ├── scripts/               # version.sh, changelog.sh, test.sh

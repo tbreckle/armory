@@ -25,6 +25,8 @@ Conventions:
 - Process names are compared normalized (`monitor::normalize`): without folder and `.exe`, case-insensitive on Windows/macOS.
 - Maximizing uses the winit window directly (`maximize_when_ready`), because Slint's `set_maximized()` before window creation gets overwritten. Restoring focuses via winit too; both need Slint's `unstable-winit-030` feature, so check them when updating Slint.
 - Slint is used under the royalty-free license; keep the "Made with Slint" badge in README.md.
+- App icon: `images/icon.svg` is the source; `icon.png` (256 px, window icon via `@image-url` in `app.slint`) and `icon.ico` (16–256 px, embedded into the .exe by `build.rs` with `winresource`, only when building on Windows) are generated from it:
+  `for n in 16 24 32 48 64 128 256; do inkscape images/icon.svg --export-type=png --export-width=$n --export-filename=/tmp/icon-$n.png; done; cp /tmp/icon-256.png images/icon.png; convert /tmp/icon-{16,24,32,48,64,128,256}.png images/icon.ico`
 
 ## Build Commands
 

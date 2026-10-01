@@ -128,6 +128,30 @@ impl Layout {
             .fold(target, f32::min);
         self.clamp_offset(snapped, view_height)
     }
+
+    /// Offset one row further down (mouse wheel): the next row moves to the top.
+    /// Moves at most a view height, so items taller than the view are passed in steps.
+    pub fn row_down(&self, offset: f32, view_height: f32) -> f32 {
+        let target = self
+            .rects
+            .iter()
+            .map(|r| r.y)
+            .filter(|&y| y > offset + 0.5)
+            .fold(offset + view_height, f32::min);
+        self.clamp_offset(target, view_height)
+    }
+
+    /// Offset one row further up (mouse wheel): the row above, or a cut-off row, moves to the
+    /// top. Moves at most a view height.
+    pub fn row_up(&self, offset: f32, view_height: f32) -> f32 {
+        let target = self
+            .rects
+            .iter()
+            .map(|r| r.y)
+            .filter(|&y| y < offset - 0.5)
+            .fold(offset - view_height, f32::max);
+        self.clamp_offset(target, view_height)
+    }
 }
 
 #[cfg(test)]
@@ -189,6 +213,41 @@ mod tests {
         // Up: 240 - 150 = 90 cuts row 60, so snap to 60.
         assert_eq!(layout.page_up(240.0, 150.0), 60.0);
         assert_eq!(layout.page_up(60.0, 150.0), 0.0);
+    }
+
+    #[test]
+    fn wheel_scrolls_row_by_row() {
+        // Rows at 0, 30 (two tiles), 90, 120; height 170.
+        let layout = Layout::new(&[FULL, TILE, TILE, FULL, TILE], 1000.0, 10.0);
+        assert_eq!(layout.row_down(0.0, 100.0), 30.0);
+        assert_eq!(layout.row_down(30.0, 100.0), 70.0);
+        // Clamped to the end, which cuts the row at 30 at the top.
+        assert_eq!(layout.row_down(70.0, 100.0), 70.0);
+        assert_eq!(layout.row_up(70.0, 100.0), 30.0);
+        assert_eq!(layout.row_up(30.0, 100.0), 0.0);
+        assert_eq!(layout.row_up(0.0, 100.0), 0.0);
+    }
+
+    #[test]
+    fn wheel_steps_through_items_taller_than_the_view() {
+        let layout = Layout::new(
+            &[
+                TILE,
+                Shape::Tile {
+                    width: 100.0,
+                    height: 500.0,
+                },
+                TILE,
+            ],
+            100.0,
+            10.0,
+        );
+        // Rows at 0, 60, 570; height 620.
+        assert_eq!(layout.row_down(0.0, 200.0), 60.0);
+        assert_eq!(layout.row_down(60.0, 200.0), 260.0);
+        assert_eq!(layout.row_down(260.0, 200.0), 420.0);
+        assert_eq!(layout.row_up(420.0, 200.0), 220.0);
+        assert_eq!(layout.row_up(220.0, 200.0), 60.0);
     }
 
     #[test]

@@ -1,5 +1,5 @@
 // A.R.M.O.R.Y. user interface. Everything is sized for a light gun: large targets, no
-// scrollbars (page buttons instead), tabs as big buttons in a column on the left.
+// scrollbars (page buttons instead, plus the mouse wheel), tabs as big buttons in a column on the left.
 // The Rust side (src/ui.rs) computes the item positions and pushes all state; this file only
 // draws it and reports clicks.
 
@@ -238,6 +238,8 @@ export component AppWindow inherits Window {
     callback tab-clicked(int);
     callback item-clicked(int);
     callback page(int);
+    // Mouse wheel over the content; positive is up.
+    callback scroll(length);
     callback content-resized(length, length);
     callback reload();
     callback quit();
@@ -316,6 +318,14 @@ export component AppWindow inherits Window {
 
                 changed width => { root.content-resized(self.width, self.height); }
                 changed height => { root.content-resized(self.width, self.height); }
+
+                // Behind the content: gets the wheel events the buttons don't take.
+                TouchArea {
+                    scroll-event(event) => {
+                        root.scroll(event.delta-y);
+                        accept
+                    }
+                }
 
                 Rectangle {
                     y: -root.scroll-offset;

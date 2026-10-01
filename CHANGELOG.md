@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release workflows: `release-start.yml` creates release/hotfix branches, `release-finish.yml` tags, builds and publishes GitHub Releases
 - SemVer versioning via `scripts/version.sh`, injected at build time (unofficial builds are `0.0.0+<sha>`)
 - Light gun friendly launcher UI (Slint): tabs as big buttons in a column on the left, extra-large buttons with image and/or label, dividers with optional label, text labels; page up/down buttons instead of scrollbars
+- Mouse wheel (and touchpad) scrolls the buttons of a tab row by row
 - Starts at full display size as a normal (not fullscreen) window
 - YAML configuration (`armory.yaml`, see `docs/CONFIGURATION.md`) with line-accurate error screen and reload; looked up via `--config`, next to the executable, or in the user's config directory
 - Buttons start executables, scripts (`.sh`, `.bash`, `.bat`, `.cmd`, `.ps1`) or files through their file association; `with` overrides the program; built-in actions `quit`, `reload`, `minimize`

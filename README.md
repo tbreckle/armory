@@ -33,7 +33,7 @@ A.R.M.O.R.Y. is a starter hub for arcade light gun setups. Put down the keyboard
 <img src="docs/images/screenshot.png" alt="A.R.M.O.R.Y. with the example configuration" width="800">
 </div>
 
-- **Made for light guns**: big tabs in a column on the left, extra-large buttons, and page up/down buttons instead of scrollbars
+- **Made for light guns**: big tabs in a column on the left, extra-large buttons, and page up/down buttons instead of scrollbars (the mouse wheel scrolls row by row)
 - **Starts anything**: executables, scripts (`.sh`, `.bat`, `.cmd`, `.ps1`, ...) and files opened through their file association (such as `.ahk` for AutoHotkey)
 - **Buttons** with an image, a label or both; **dividers** with an optional label; plain **text labels**
 - **Status labels** show whether a background tool runs (`on`, `off` or `fault`, checked every second), with your own texts via `{STATUS}`

@@ -23,6 +23,9 @@ slint::include_modules!();
 
 /// How often the UI thread picks up monitor results and exited programs.
 const POLL_INTERVAL: Duration = Duration::from_millis(100);
+/// Mouse wheel distance that scrolls one row: one wheel notch in Slint's winit backend.
+/// Touchpads report pixels, which add up until they reach it.
+const WHEEL_STEP: f32 = 60.0;
 /// How long a `wait_for` process may take to appear before ARMORY restores anyway.
 const WAIT_FOR_APPEAR_TIMEOUT: Duration = Duration::from_secs(30);
 
@@ -86,6 +89,8 @@ fn connect(app: &AppWindow, controller: &Rc<RefCell<Controller>>) {
     let c = controller.clone();
     app.on_page(move |direction| c.borrow_mut().page(direction));
     let c = controller.clone();
+    app.on_scroll(move |delta| c.borrow_mut().scroll(delta));
+    let c = controller.clone();
     app.on_content_resized(move |w, h| c.borrow_mut().resize(w, h));
     let c = controller.clone();
     app.on_reload(move || c.borrow_mut().load());
@@ -131,6 +136,8 @@ struct Controller {
     view: (f32, f32),
     layout: Layout,
     offset: f32,
+    /// Mouse wheel distance not yet turned into row steps; positive scrolls up.
+    wheel: f32,
     counts: Counts,
     restore: Option<Restore>,
     launches: u64,
@@ -157,6 +164,7 @@ impl Controller {
             view: (0.0, 0.0),
             layout: Layout::default(),
             offset: 0.0,
+            wheel: 0.0,
             counts: Counts::new(),
             restore: None,
             launches: 0,
@@ -358,6 +366,28 @@ impl Controller {
             self.layout.page_down(self.offset, height)
         };
         self.refresh();
+    }
+
+    /// Mouse wheel: scrolls row by row, `delta` > 0 is up.
+    fn scroll(&mut self, delta: f32) {
+        if self.wheel * delta < 0.0 {
+            self.wheel = 0.0;
+        }
+        self.wheel += delta;
+        let height = self.view.1;
+        let start = self.offset;
+        while self.wheel.abs() >= WHEEL_STEP {
+            let step = self.wheel.signum() * WHEEL_STEP;
+            self.offset = if step > 0.0 {
+                self.layout.row_up(self.offset, height)
+            } else {
+                self.layout.row_down(self.offset, height)
+            };
+            self.wheel -= step;
+        }
+        if self.offset != start {
+            self.refresh();
+        }
     }
 
     fn click_item(&mut self, index: usize) {

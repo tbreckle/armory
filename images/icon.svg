@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- A.R.M.O.R.Y. icon: shield (armory) with a light gun crosshair. Source for icon.png/icon.ico. -->
+  <path d="M128 16L220 50V120C220 178 182 218 128 242C74 218 36 178 36 120V50Z"
+        fill="#1d222c" stroke="#ffb400" stroke-width="18" stroke-linejoin="round"/>
+  <g fill="none" stroke="#f2f2f2" stroke-width="12" stroke-linecap="round">
+    <circle cx="128" cy="126" r="46"/>
+    <path d="M128 60V92M128 160V192M62 126H94M162 126H194"/>
+  </g>
+  <circle cx="128" cy="126" r="13" fill="#e74c3c"/>
+</svg>

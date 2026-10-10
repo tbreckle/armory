@@ -1,0 +1,83 @@
+# A.R.M.O.R.Y. example configuration. See docs/CONFIGURATION.md for all settings.
+# Relative paths (images, programs, cwd) are relative to this file's folder.
+version: 1
+
+style:
+  theme: dark
+  font_size: 28
+  button_width: 300
+  button_height: 200
+
+status_texts:
+  fault: "Error" # "on" and "off" keep their defaults
+
+tabs:
+  - name: "Games"
+    image: images/joystick.svg
+    items:
+      - divider: "Sega Model 3"
+      - button:
+          label: "The Lost World"
+          image: images/crosshair.svg
+          run: C:/Emulators/Supermodel/Supermodel.exe
+          args: ["roms/lostwsga.zip", "-fullscreen"]
+          on_launch: minimize # restore ARMORY when the game exits
+      - button:
+          label: "Let's Go Jungle"
+          run: C:/Emulators/Supermodel/Supermodel.exe
+          args:
+            - roms/letsgoju.zip
+      - divider: "MAME"
+      - button:
+          label: "Time Crisis"
+          run: mame
+          args:
+            - timecris
+      - button:
+          image: images/crosshair.svg
+          run: mame
+          args:
+            - point_blank
+
+  - name: "Tools"
+    image: images/gear.svg
+    items:
+      - divider: "Light guns"
+      - label:
+          text: "Sinden driver: {STATUS}"
+          monitor: SindenLightgun.exe
+          status_texts: { on: "Ready", off: "Not running" }
+      - button:
+          label: "Start Sinden"
+          run: C:/Sinden/SindenLightgun.exe
+      - button:
+          label: "Recoil script"
+          run: scripts/recoil.ahk # opened with AutoHotkey through the file association
+          on_launch: minimize
+          wait_for: AutoHotkey64.exe # needed: the association hides the real process
+      - label:
+          text: "AutoHotkey {STATUS}"
+          monitor: AutoHotkey64.exe
+          tile: true
+      - divider: "OpenFIRE"
+      - button:
+          label: "OpenFIRE App" # configure, calibrate and test OpenFIRE guns
+          run: C:/Tools/OpenFIRE App/OpenFIREapp.exe
+          on_launch: minimize
+      - label:
+          # The app keeps the gun's COM port open, so games can't use it for recoil and rumble.
+          text: "OpenFIRE App: {STATUS}"
+          monitor: OpenFIREapp.exe
+          status_texts: { on: "Close before playing", off: "Closed" }
+          tile: true
+      - divider:
+      - label: "Buttons can run executables, scripts (.sh, .bat, .cmd, .ps1) or any file with a file association."
+
+  - name: "System"
+    image: images/power.svg
+    items:
+      - button:
+          { label: "Reload config", image: images/reload.svg, action: reload }
+      - button:
+          { label: "Minimize", image: images/minimize.svg, action: minimize }
+      - button: { label: "Quit", image: images/quit.svg, action: quit }

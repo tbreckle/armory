@@ -47,6 +47,13 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        # Slint's font loading links fontconfig/freetype.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfontconfig-dev pkg-config
+
       # Installs the toolchain pinned in rust-toolchain.toml.
       - name: Install Rust
         run: |
@@ -66,21 +73,23 @@ jobs:
           restore-keys: ${{ runner.os }}-cargo-
 
       - name: Run tests
-        run: cargo test --locked --release
+        run: cargo test --locked --release --workspace
 
       - name: Build
         if: runner.os != 'macOS'
-        run: cargo build --locked --release
+        run: cargo build --locked --release --workspace
 
       - name: Build universal binary (macOS)
         if: runner.os == 'macOS'
         run: |
-          cargo build --locked --release --target aarch64-apple-darwin
-          cargo build --locked --release --target x86_64-apple-darwin
+          cargo build --locked --release --workspace --target aarch64-apple-darwin
+          cargo build --locked --release --workspace --target x86_64-apple-darwin
           mkdir -p target/release
-          lipo -create -output target/release/armory \
-            target/aarch64-apple-darwin/release/armory \
-            target/x86_64-apple-darwin/release/armory
+          for bin in armory launchbox-images; do
+            lipo -create -output "target/release/$bin" \
+              "target/aarch64-apple-darwin/release/$bin" \
+              "target/x86_64-apple-darwin/release/$bin"
+          done
 
       # Archive on the runner: upload-artifact drops the executable bit.
       - name: Package
@@ -88,11 +97,12 @@ jobs:
           rm -rf dist
           mkdir -p "dist/$PACKAGE"
           cp LICENSE "dist/$PACKAGE/"
+          cp -r examples "dist/$PACKAGE/"
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-            cp target/release/armory.exe "dist/$PACKAGE/"
+            cp target/release/armory.exe target/release/launchbox-images.exe "dist/$PACKAGE/"
             (cd dist && pwsh -NoProfile -Command "Compress-Archive -Path '$PACKAGE' -DestinationPath '$PACKAGE.zip'")
           else
-            cp target/release/armory "dist/$PACKAGE/"
+            cp target/release/armory target/release/launchbox-images "dist/$PACKAGE/"
             tar -C dist -czf "dist/$PACKAGE.tar.gz" "$PACKAGE"
           fi
 
@@ -111,6 +121,11 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfontconfig-dev pkg-config
+
       # Installs the toolchain pinned in rust-toolchain.toml (incl. clippy and rustfmt).
       - name: Install Rust
         run: rustup toolchain install
@@ -126,7 +141,7 @@ jobs:
           restore-keys: ${{ runner.os }}-cargo-clippy-
 
       - name: Run clippy
-        run: cargo clippy --locked --all-targets --all-features -- -D warnings
+        run: cargo clippy --locked --workspace --all-targets --all-features -- -D warnings
 
   fmt:
     name: Format
@@ -141,7 +156,7 @@ jobs:
         run: rustup toolchain install
 
       - name: Check formatting
-        run: cargo fmt -- --check
+        run: cargo fmt --all -- --check
 
   scripts:
     name: Scripts

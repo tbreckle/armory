@@ -1,0 +1,22 @@
+[package]
+name = "launchbox-images"
+description = "Downloads clear logos of games from the LaunchBox Games Database as button images for A.R.M.O.R.Y."
+version = "0.0.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/tbreckle/armory"
+publish = false
+
+# Own dependencies, separate from the launcher: they are only built together with this tool.
+[dependencies]
+anyhow = "1.0"
+dirs = "7.0"
+flate2 = "1.1"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+quick-xml = "0.42"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+unicode-normalization = "0.1"
+# rustls with the ring backend: no OpenSSL, no CMake, the same on Linux, Windows and macOS.
+ureq = { version = "3.4", default-features = false, features = ["rustls"] }
+zip = { version = "9.0", default-features = false, features = ["deflate-flate2"] }

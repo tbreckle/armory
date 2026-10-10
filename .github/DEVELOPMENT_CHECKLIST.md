@@ -5,9 +5,9 @@ Use this checklist when submitting pull requests to ensure code quality and cons
 ## Pre-Submission
 
 - [ ] Code compiles without errors
-- [ ] All tests pass locally: `cargo test`
-- [ ] No clippy warnings: `cargo clippy --all-targets -- -D warnings`
-- [ ] Code is formatted: `cargo fmt`
+- [ ] All tests pass locally: `cargo test --workspace`
+- [ ] No clippy warnings: `cargo clippy --workspace --all-targets -- -D warnings`
+- [ ] Code is formatted: `cargo fmt --all`
 - [ ] Scripts pass: `shellcheck scripts/*.sh && scripts/test.sh` (if changed)
 
 ## Git & Commits

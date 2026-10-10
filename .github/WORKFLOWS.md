@@ -31,11 +31,11 @@ Called by CI and Release Finish with a `version` (and optionally a `ref`).
 
 | Job | What it does | Artifact |
 |---|---|---|
-| App (linux-x86_64) | test + build | `armory-<version>-linux-x86_64.tar.gz` |
-| App (windows-x86_64) | test + build | `armory-<version>-windows-x86_64.zip` |
-| App (macos-universal) | test + build for arm64 and x86_64, `lipo` | `armory-<version>-macos-universal.tar.gz` |
-| Clippy | `cargo clippy -D warnings` | |
-| Format | `cargo fmt --check` | |
+| App (linux-x86_64) | test + build (`armory`, `launchbox-images`) | `armory-<version>-linux-x86_64.tar.gz` |
+| App (windows-x86_64) | test + build (`armory.exe`, `launchbox-images.exe`) | `armory-<version>-windows-x86_64.zip` |
+| App (macos-universal) | test + build for arm64 and x86_64, `lipo` per binary | `armory-<version>-macos-universal.tar.gz` |
+| Clippy | `cargo clippy --workspace -D warnings` | |
+| Format | `cargo fmt --all --check` | |
 | Scripts | shellcheck + `scripts/test.sh` | |
 
 ### 3. Release Start (`release-start.yml`)
@@ -89,7 +89,7 @@ scripts/test.sh                     # tests for version.sh and changelog.sh
 scripts/changelog.sh notes 0.1.0    # release notes of a version
 
 # Build with an injected version
-ARMORY_VERSION=$(scripts/version.sh) cargo build --release
+ARMORY_VERSION=$(scripts/version.sh) cargo build --release --workspace
 ```
 
 ## Troubleshooting

@@ -59,6 +59,17 @@ tabs:
           text: "AutoHotkey {STATUS}"
           monitor: AutoHotkey64.exe
           tile: true
+      - divider: "OpenFIRE"
+      - button:
+          label: "OpenFIRE App" # configure, calibrate and test OpenFIRE guns
+          run: C:/Tools/OpenFIRE App/OpenFIREapp.exe
+          on_launch: minimize
+      - label:
+          # The app keeps the gun's COM port open, so games can't use it for recoil and rumble.
+          text: "OpenFIRE App: {STATUS}"
+          monitor: OpenFIREapp.exe
+          status_texts: { on: "Close before playing", off: "Closed" }
+          tile: true
       - divider:
       - label: "Buttons can run executables, scripts (.sh, .bat, .cmd, .ps1) or any file with a file association."
 

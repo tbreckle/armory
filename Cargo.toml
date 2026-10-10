@@ -7,6 +7,12 @@ license = "MIT"
 repository = "https://github.com/tbreckle/armory"
 publish = false
 
+# The launcher is the root package; helper tools are members with their own dependencies, which
+# are only built together with them. Shared: Cargo.lock, target/ and the profiles below.
+[workspace]
+members = ["tools/launchbox-images"]
+resolver = "3"
+
 [dependencies]
 # Slint is used under the Slint Royalty-free Desktop, Mobile, and Web Applications License 2.0,
 # which requires the "Made with Slint" attribution badge (README.md) or the AboutSlint widget.

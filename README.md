@@ -77,15 +77,27 @@ armory --config my-cabinet.yaml # or an explicit file
 > [!TIP]
 > Builds labeled `0.0.0+<commit>` are unofficial development builds.
 
+### 🖼️ Button images from LaunchBox
+
+`launchbox-images` (included in the release packages) fetches the clear logo of a game from the [LaunchBox Games Database](https://gamesdb.launchbox-app.com/) for use as a button image:
+
+```bash
+launchbox-images search time crisis   # list matching games with their IDs
+launchbox-images get 33642            # save it as images/time-crisis.png
+```
+
+The first search downloads the LaunchBox database (about 100 MB) and keeps a small index in the cache directory; `update` refreshes it. Logos are saved as PNG into `images/` in the current folder, named after the game (lowercase, other characters than letters and digits become `-`). `--help` lists the options (`--platform`, `--region`, `--name`, `--out`, `--force`, ...).
+
 ## 🔧 Building from source
 
 **Requirements:** Rust 1.98 (pinned in `rust-toolchain.toml`, installed automatically by rustup). On Linux also `libfontconfig-dev` and `pkg-config`.
 
 ```bash
 cargo run --release -- --config examples/armory.yaml   # build and launch with the example
-cargo test              # unit tests
-cargo clippy            # lint (warnings fail CI)
-cargo fmt --check       # formatting check
+cargo run --release -p launchbox-images -- search point blank   # the LaunchBox image tool
+cargo test --workspace         # unit tests
+cargo clippy --workspace       # lint (warnings fail CI)
+cargo fmt --all --check        # formatting check
 ```
 
 <details>
@@ -93,13 +105,14 @@ cargo fmt --check       # formatting check
 
 ```
 armory/
-├── src/                   # Application source (single crate)
+├── src/                   # Launcher source (root crate of the Cargo workspace)
 ├── ui/app.slint           # User interface (Slint)
 ├── build.rs               # Compiles the UI, injects the build version (ARMORY_VERSION)
 ├── images/                # App icon (icon.svg is the source of icon.png/icon.ico)
 ├── examples/              # Example configuration with images
 ├── docs/                  # Configuration reference
 ├── scripts/               # version.sh, changelog.sh, test.sh
+├── tools/                 # Helper tools, own crates: launchbox-images (button images from LaunchBox)
 └── .github/workflows/     # CI, release-start, release-finish
 ```
 

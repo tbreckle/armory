@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-10
+
 ### Added
 - Project skeleton: single Rust crate, GitFlow, CI/CD (build and test on Linux, Windows and macOS universal, clippy, fmt, script tests)
 - Release workflows: `release-start.yml` creates release/hotfix branches, `release-finish.yml` tags, builds and publishes GitHub Releases

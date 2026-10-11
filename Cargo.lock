@@ -2690,6 +2690,7 @@ dependencies = [
  "serde_json",
  "unicode-normalization",
  "ureq",
+ "winresource",
  "zip",
 ]
 

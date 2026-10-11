@@ -28,6 +28,7 @@ Conventions:
 - Slint is used under the royalty-free license; keep the "Made with Slint" badge in README.md.
 - App icon: `images/icon.svg` is the source; `icon.png` (256 px, window icon via `@image-url` in `app.slint`) and `icon.ico` (16–256 px, embedded into the .exe by `build.rs` with `winresource`, only when building on Windows) are generated from it:
   `for n in 16 24 32 48 64 128 256; do inkscape images/icon.svg --export-type=png --export-width=$n --export-filename=/tmp/icon-$n.png; done; cp /tmp/icon-256.png images/icon.png; convert /tmp/icon-{16,24,32,48,64,128,256}.png images/icon.ico`
+- Tool icons: each tool has its own variant of the app icon (same shield, own color and symbol) in `tools/<name>/images/icon.svg`, generated into `icon.ico` with the same command and embedded by the tool's `build.rs`.
 
 ## Build Commands
 

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example configuration: OpenFIRE section in the Tools tab (OpenFIRE App button, status label that warns while the app holds the gun's COM port)
 - Status labels monitor a process every second (on / off / fault), with `{STATUS}` placeholder and global or per-label, partial status texts
 - `launchbox-images`: command line tool (second crate in a Cargo workspace, own dependencies, included in the release packages) that searches the LaunchBox Games Database by title and saves a game's clear logo as `images/<name>.png`
+- `launchbox-images` icon (the A.R.M.O.R.Y. shield in cyan with a picture and a download arrow), embedded into `launchbox-images.exe` on Windows together with version info
 
 ---
 
